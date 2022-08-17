@@ -50,7 +50,7 @@ Update VUE_APP_RECIPE_DATA_SERVICE with REST_RECIPE_ROUTE
 
 Update VUE_APP_IMAGE_SERVER_URL with S3 Public Endpoint
 
-`oc get route s3 -n openshift-storage -o json | jq -r '.spec.host`
+`oc get route s3 -n openshift-storage -o json | jq -r '.spec.host'`
 
 Deploy app
 
