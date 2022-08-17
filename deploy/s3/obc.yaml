@@ -1,0 +1,7 @@
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: recipevault-images
+spec:
+  bucketName: recipevault-images
+  storageClassName: openshift-storage.noobaa.io
