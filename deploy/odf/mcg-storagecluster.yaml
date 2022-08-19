@@ -1,0 +1,21 @@
+apiVersion: ocs.openshift.io/v1
+kind: StorageCluster
+metadata:
+  annotations:
+    uninstall.ocs.openshift.io/cleanup-policy: delete
+    uninstall.ocs.openshift.io/mode: graceful
+  name: ocs-storagecluster
+  namespace: openshift-storage
+  ownerReferences:
+    - apiVersion: odf.openshift.io/v1alpha1
+      kind: StorageSystem
+      name: ocs-storagecluster-storagesystem
+      uid: STORAGE_SYSTEM_UID
+  finalizers:
+    - storagecluster.ocs.openshift.io
+spec:
+  multiCloudGateway:
+    dbStorageClassName: gp2
+    reconcileStrategy: standalone
+  version: 4.10.0
+  
