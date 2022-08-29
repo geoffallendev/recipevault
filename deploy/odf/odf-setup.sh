@@ -20,7 +20,7 @@ oc wait --for=jsonpath='{.status.catalogHealth[0].healthy}'=true subscription/mc
 oc apply -f ./mcg-storagesystem.yaml
 ## once storage system is available, obtain the uid
 # Need uid to include in storagecluster resource
-oc wait --for=jsonpath='{.status.conditions[0].type}'=true storagesystem/ocs-storagecluster-storagesystem -n openshift-storage 
+oc wait --for=jsonpath='{.status.conditions[0].status}'=True storagesystem/ocs-storagecluster-storagesystem -n openshift-storage 
 
 oc get storagesystem/ocs-storagecluster-storagesystem -n openshift-storage -o jsonpath='{.status.conditions[0].status}'
 
