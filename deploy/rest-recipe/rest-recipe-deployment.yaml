@@ -52,7 +52,7 @@ spec:
             - name: quarkus.s3.aws.credentials.type
               value: static
             - name: quarkus.s3.endpoint-override
-              value: https://<S3_ROUTE>
+              value: http://s3-openshift-storage.apps.cluster-nwcpx.nwcpx.sandbox332.opentlc.com
             - name: quarkus.s3.path-style-access
               value: 'true'
           resources: {}

@@ -10,7 +10,7 @@ metadata:
     - apiVersion: odf.openshift.io/v1alpha1
       kind: StorageSystem
       name: ocs-storagecluster-storagesystem
-      uid: STORAGE_SYSTEM_UID
+      uid:  STORAGE_SYSTEM_UID 
   finalizers:
     - storagecluster.ocs.openshift.io
 spec:

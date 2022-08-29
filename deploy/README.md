@@ -24,6 +24,12 @@ Tools required
 
 - [ODF Install](./odf/README.md)
 
+- [Automated Recipe Vault App Deployment](./setup.sh)
+
+`./setup.sh`
+
+
+## Manual Deployment 
 
 ### Deploy Postgres DB (using template)
 `oc new-app --name=postgresql --template=postgresql-persistent \

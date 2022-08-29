@@ -2,11 +2,16 @@
 
 This requires OCP 4.10.x and ODF 4.10.x
 
-I'm working on automating the deployment but for the initially deployment, here is how to only deploy and use the Multi-Cloud Gateway (S3) capabilities of ODF.
-
 These were all performed as Cluster Admin
 
-## Deploy ODF Operator
+## WIP Automation for ODF Install
+
+[ODF Install](./odf-setup.sh)
+
+`./odf-setup.ssh`
+
+
+## Deploy ODF From Web Console
 
 ![Select ODF Operator](./images/odf_operator_install.png)
 

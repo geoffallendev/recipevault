@@ -1,7 +1,7 @@
 apiVersion: v1
 data:
-  VUE_APP_IMAGE_SERVER_URL: <S3-ROUTE>/<BUCKET_NAME>/
-  VUE_APP_RECIPE_DATA_SERVICE: <REST_RECIPE_ROUTE>
+  VUE_APP_IMAGE_SERVER_URL: http://s3-openshift-storage.apps.cluster-nwcpx.nwcpx.sandbox332.opentlc.com/recipevault-images/
+  VUE_APP_RECIPE_DATA_SERVICE: https://rest-recipe-recipevault.apps.cluster-nwcpx.nwcpx.sandbox332.opentlc.com
 kind: ConfigMap
 metadata:
   labels:
