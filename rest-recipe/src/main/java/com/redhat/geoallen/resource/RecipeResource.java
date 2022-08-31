@@ -314,7 +314,7 @@ public class RecipeResource extends CommonResource {
     }  
 
     @GET
-    @Path("/latest/}")
+    @Path("/latest/")
     public List<Recipe> getLatest() {
         
         return Recipe.getLatestRecipes();
