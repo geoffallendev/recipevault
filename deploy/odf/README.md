@@ -8,7 +8,7 @@ These were all performed as Cluster Admin
 
 [ODF Install](./odf-setup.sh)
 
-`./odf-setup.ssh`
+`./odf-setup.sh`
 
 
 ## Deploy ODF From Web Console
