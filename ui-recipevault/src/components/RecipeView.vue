@@ -61,7 +61,10 @@
               </div>
 
               <div>
-                <strong>Directions: </strong>{{store.recipe.directions}}
+                <strong>Directions: </strong>
+                 <div v-for="(direction, index) in store.recipe.directions" :key="index">
+                  {{direction}}
+                  </div>
               </div>
 
           </div>

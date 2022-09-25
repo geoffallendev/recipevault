@@ -32,13 +32,21 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import org.jboss.logging.Logger;
-import org.jboss.resteasy.annotations.jaxrs.PathParam;
-import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+import org.jboss.resteasy.reactive.RestPath;
+//import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+
+import org.jboss.resteasy.reactive.MultipartForm;
 
 import com.redhat.geoallen.view.RecipeDTO;
 import com.redhat.geoallen.view.RecipeFormData;
-import com.redhat.geoallen.view.RecipeMapper;
+import com.redhat.geoallen.view.RecipeView;
+
+import com.redhat.geoallen.view.RecipeFormToDTOMapper;
+import com.redhat.geoallen.view.RecipeDTOToEntityMapper;
+
+
 import com.redhat.geoallen.orm.panache.Recipe;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -64,7 +72,10 @@ public class RecipeResource extends CommonResource {
    Logger log; 
 
    @Inject
-   RecipeMapper recipeMapper;
+   RecipeFormToDTOMapper recipeFormToDTOMapper;
+
+   @Inject
+   RecipeDTOToEntityMapper recipeDTOToEntityMapper;
 
   
 
@@ -81,13 +92,13 @@ public class RecipeResource extends CommonResource {
 
     @GET
     @Path("/userid/{userid}")
-    public List<Recipe> getByUserId(@PathParam String userid) {  
+    public List<Recipe> getByUserId( String userid) {  
         return Recipe.findByUserID(userid);
     }
 
     @GET
     @Path("{id}")
-    public Recipe getSingle(@PathParam Long id) {
+    public Recipe getSingle( Long id) {
         Recipe entity = Recipe.findById(id);
         if (entity == null) {
             throw new WebApplicationException("Recipe with id of " + id + " does not exist.", 404);
@@ -119,7 +130,7 @@ public class RecipeResource extends CommonResource {
     @Transactional
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response uploadFile(@MultipartForm RecipeFormData formData) throws Exception {
+    public Response createRecipeWithImage(@MultipartForm RecipeFormData formData) throws Exception {
 
 
         try { 
@@ -130,12 +141,13 @@ public class RecipeResource extends CommonResource {
         UUID imageFileUuid = null;
         PutObjectResponse putResponse = null;
 
-        String recipeJSON = formData.recipe;
-        ObjectMapper objectMapper = new ObjectMapper();
+        RecipeView recipe = formData.recipe;
+        //ObjectMapper objectMapper = new ObjectMapper();
+       
+        RecipeDTO recipeDTO = recipeFormToDTOMapper.RecipeFormToDTO(recipe);
         
-
         //create the DTO to use in the conditional statements
-        RecipeDTO recipeDTO = objectMapper.readValue(recipeJSON, RecipeDTO.class);
+       // RecipeDTO recipeDTO = objectMapper.readValue(recipeJSON, RecipeDTO.class);
         recipeDTO.file = formData.file;
         recipeDTO.filename = formData.filename;
         recipeDTO.mimetype = formData.mimetype;
@@ -159,7 +171,7 @@ public class RecipeResource extends CommonResource {
                         recipeDTO.image_name = imageName;
                         
                         putResponse = s3.putObject(buildPutRequest(recipeDTO.image_name,recipeDTO.mimetype),
-                        RequestBody.fromFile(uploadToTemp(recipeDTO.file)));
+                        RequestBody.fromFile(recipeDTO.file));
 
                         // Check the S3 Put Response
                         if (putResponse != null) {
@@ -167,7 +179,7 @@ public class RecipeResource extends CommonResource {
                             log.info(putResponse.eTag());
 
                             //newRecipe = new Recipe(recipeDTO);
-                            newRecipe = recipeMapper.RecipeDTOToRecipeEntity(recipeDTO);
+                            newRecipe = recipeDTOToEntityMapper.RecipeDTOToRecipeEntity(recipeDTO);
 
                             newRecipe.persist();
 
@@ -208,22 +220,24 @@ public class RecipeResource extends CommonResource {
     @Transactional
     @Path("/{id}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response updateRecipe(@PathParam Long id, @MultipartForm RecipeFormData updatedRecipe) throws Exception {
+    public Response updateRecipe( @RestPath Long id, @MultipartForm RecipeFormData updatedRecipe) throws Exception {
 
         try { 
 
         log.info("id: " +  id);
 
+        RecipeView recipe = updatedRecipe.recipe;
+
         PutObjectResponse putResponse = null;
-        String recipeJSON = updatedRecipe.recipe;
-        ObjectMapper objectMapper = new ObjectMapper();
         
-        RecipeDTO recipeDTO = objectMapper.readValue(recipeJSON, RecipeDTO.class);
+        RecipeDTO recipeDTO = recipeFormToDTOMapper.RecipeFormToDTO(recipe);
+
         recipeDTO.file = updatedRecipe.file;
         recipeDTO.filename = updatedRecipe.filename;
         recipeDTO.mimetype = updatedRecipe.mimetype;
-
-
+        log.info("From DTO: " + recipeDTO.title);
+        
+       
         Recipe existingRecipe= Recipe.findById(id);
 
         if (existingRecipe == null) {
@@ -243,7 +257,7 @@ public class RecipeResource extends CommonResource {
            
                 log.info("From DTO: " + recipeDTO.title);
 
-                recipeMapper.merge(existingRecipe,recipeDTO);
+                recipeDTOToEntityMapper.merge(existingRecipe,recipeDTO);
 
                 log.info(existingRecipe);
 
@@ -252,7 +266,7 @@ public class RecipeResource extends CommonResource {
 
           else {
             log.info(toString());
-            recipeMapper.merge(existingRecipe,recipeDTO);
+            recipeDTOToEntityMapper.merge(existingRecipe,recipeDTO);
 
             if (existingRecipe.image_name == null || existingRecipe.image_name.length()== 0) {
 
@@ -282,7 +296,7 @@ public class RecipeResource extends CommonResource {
     @DELETE
     @Path("{id}")
     @Transactional
-    public Response delete(@PathParam Long id) {
+    public Response delete( Long id) {
         Recipe entity = Recipe.findById(id);
         DeleteObjectResponse deleteResponse = null;
         boolean fileDeleted = false;
@@ -307,7 +321,7 @@ public class RecipeResource extends CommonResource {
 
   @GET
     @Path("/title/{name}")
-    public List<Recipe> search(@PathParam("name") String name) {
+    public List<Recipe> search(String name) {
         log.info("search info: " + name);
         String title = name;
         return Recipe.searchTitle(title);
@@ -339,12 +353,13 @@ public class RecipeResource extends CommonResource {
                 recipe.image_name = imageName;
                 
                 putResponse = s3.putObject(buildPutRequest(recipe.image_name,recipe.mimetype),
-                RequestBody.fromFile(uploadToTemp(recipe.file)));
+                RequestBody.fromFile(recipe.file));
         }
 
 
         return putResponse;
     }
+
 
 
 
@@ -379,12 +394,6 @@ public class RecipeResource extends CommonResource {
 
     }
 
-    private static void addIfNotNull(Map<String, Object> map, String key, String value) {
-        if (value != null) {
-            map.put(key, value);
-        } 
-
-    }
-
+    
 
 }

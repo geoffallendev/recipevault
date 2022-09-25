@@ -79,8 +79,12 @@ public class Recipe extends PanacheEntity {
     @Column(length = 250)
     public String description;
 
-    @Column(length = 500)
-    public String directions;
+    @Type(type = "list-array")
+    @Column(
+        name = "directions",
+        columnDefinition = "text[]"
+    )
+    public List<String> directions;
 
     @Column(length = 200)
     public String source;
@@ -114,41 +118,7 @@ public class Recipe extends PanacheEntity {
     public Recipe() {
     }
 
-    public Recipe(RecipeFormData recipeForm) {
-        this.title = recipeForm.title;
-        this.image_name = recipeForm.filename;
-        this.course = recipeForm.course;
-        this.cuisine = recipeForm.cuisine;
-        this.directions = recipeForm.directions;
-        this.description = recipeForm.description;
-
-        //this.ingredients = recipeForm.ingredients;
-
-        //this.prep_time = Integer.valueOf(recipeForm.prep_time);
-        //this.servings = Integer.valueOf(recipeForm.servings);
-        this.source = recipeForm.source;
-        this.tags = recipeForm.tags;
-    }
-
-
-    // include the filename/reference - TODO: update to List
-    public Recipe(RecipeDTO recipeDTO, String fileName) {
-        this.title = recipeDTO.title;
-        this.image_name = fileName;
-        this.course = recipeDTO.course;
-        this.cuisine = recipeDTO.cuisine;
-        this.directions = recipeDTO.directions;
-        this.description = recipeDTO.description;
-        this.prep_time = recipeDTO.prep_time;
-        this.cook_time = recipeDTO.cook_time;
-        this.servings = recipeDTO.servings;
-        this.serving_unit = recipeDTO.serving_unit;
-        this.ingredients = recipeDTO.ingredients;
-    
-        this.source = recipeDTO.source;
-        this.tags = recipeDTO.tags;
-    }
-
+   
 
      // include the filename/reference - TODO: update to List
      public Recipe(RecipeDTO recipeDTO) {

@@ -1,4 +1,4 @@
-package test.com.redhat.geoallen.favfoods;
+package test.com.redhat.geoallen.recipevault;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,6 +19,11 @@ import io.restassured.response.*;
 import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
 
+import com.redhat.geoallen.view.RecipeFormData;
+import com.redhat.geoallen.view.RecipeView;
+
+
+
 @QuarkusTest
 public class RecipeEndpointTest {
 	
@@ -33,7 +38,7 @@ public class RecipeEndpointTest {
 			.toString();
 
 		System.out.println("Directory: " + userDirectory);
-		Recipe recipe = getTestRecipe();
+		RecipeView recipe = getTestRecipe();
 		
 
 		Response response =
@@ -67,7 +72,7 @@ public class RecipeEndpointTest {
 			.toString();
 
 		System.out.println("Directory: " + userDirectory);
-		Recipe recipe = getTestRecipe();
+		RecipeView recipe = getTestRecipe();
 		
 		
 
@@ -102,7 +107,7 @@ public class RecipeEndpointTest {
 	@Test
 	public void findRecipeByTitle() {
 
-		Recipe recipe = getTestRecipe();
+		RecipeView recipe = getTestRecipe();
 		Response response =
 		
 	given()
@@ -131,7 +136,7 @@ public class RecipeEndpointTest {
 
 		System.out.println("Directory: " + userDirectory);
 
-		Recipe recipe = getTestRecipe();
+		RecipeView recipe = getTestRecipe();
 	
 		Response response =
 		
@@ -175,7 +180,7 @@ public class RecipeEndpointTest {
 	public void createUpdateDeleteRecipe() {
 
 
-		Recipe recipe = getTestRecipe();
+		RecipeView recipe = getTestRecipe();
 		
 
 		Response response =
@@ -220,7 +225,7 @@ public class RecipeEndpointTest {
 
 
 
-	public Recipe getTestRecipe()  {
+	public RecipeView getTestRecipe()  {
 
 		
 		
@@ -229,17 +234,22 @@ public class RecipeEndpointTest {
 		ingredients.add("ing1");
 		ingredients.add("ing2");
 
+		List<String> directions = new ArrayList();
+		directions.add("Mix it all up");
+		directions.add("Stir It together");
+		directions.add("Bake it in the oven");
+
 	
-		Recipe recipe = new Recipe();
+		RecipeView recipe = new RecipeView();
 		recipe.title = "title";
 		recipe.description = "description";
 		recipe.author="Pat Smith";
 		recipe.cook_time = 60;
 		recipe.course ="Breakfast";
 		recipe.cuisine = "Mexican";
-		recipe.directions = "Mix, Stir, Bake";
+		recipe.directions = directions;
 
-		recipe.image_name = "test.jpg";
+		//recipe.image_name = "test.jpg";
 		
 		
 		recipe.prep_time =30;

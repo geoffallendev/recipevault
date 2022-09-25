@@ -109,7 +109,7 @@
                 class="form-control"
                 id="directions"
                 required
-                v-model="recipe.directions"
+                v-model="recipe.direction_list"
                 name="directions"
                 rows="7"
               />
@@ -160,6 +160,7 @@ export default {
         servings: "",
         serving_unit: "",
         ingredient_list: "",
+        direction_list: ""
       },
       selectedFiles: undefined,
       currentFile: undefined,

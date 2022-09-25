@@ -10,7 +10,10 @@ echo 'Create Bucket'
 aws s3 mb s3://recipevault-images --endpoint-url=http://localhost:4566
 
 # Confirm 'recipe-images' Bucket is listed
-#aws s3 ls --endpoint-url=http://localhost:4566
+#aws s3 ls --endpoint-url=http://localhost:4566 s3://recipevault-images
+
+## Clean out bucket
+#aws s3 rm s3://recipevault-images --recursive --endpoint-url=http://localhost:4566
 
 echo 'Apply Policy to S3 Bucket'
 # Apply Read-Anonymous to Bucket

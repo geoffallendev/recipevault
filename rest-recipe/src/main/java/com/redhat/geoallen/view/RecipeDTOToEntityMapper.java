@@ -5,7 +5,7 @@ import org.mapstruct.*;
 import com.redhat.geoallen.orm.panache.Recipe;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.CDI)
-public interface RecipeMapper {
+public interface RecipeDTOToEntityMapper {
  
 
     Recipe RecipeDTOToRecipeEntity(RecipeDTO recipe); 

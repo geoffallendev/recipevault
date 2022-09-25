@@ -14,8 +14,9 @@ class RecipeDataService {
  /** Create Recipe  */
   create(file, recipe) {
 
-    
     recipe.ingredients = recipe.ingredient_list.split("\n") 
+
+    recipe.directions = recipe.direction_list.split("\n") 
 
     const new_recipe = JSON.stringify(recipe)
 
@@ -40,7 +41,9 @@ class RecipeDataService {
  /** Update Recipe  */
   update(file, recipe) {
 
-    //recipe.ingredients = recipe.ingredients.split("\n") 
+  recipe.ingredients = recipe.ingredients.split("\n") 
+
+  recipe.directions = recipe.directions.split("\n") 
 
   const updated_recipe = JSON.stringify(recipe)
 

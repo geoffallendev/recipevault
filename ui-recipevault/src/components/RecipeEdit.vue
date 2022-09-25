@@ -150,15 +150,19 @@ selectFile() {
       store.currentFile = this.currentFile
     },
 
+formatList() {
+
+
+}
+
 
   },
   mounted() {
     this.message = '';
+    store.recipe.directions = store.recipe.directions.join('\n');
+    store.recipe.ingredients = store.recipe.ingredients.join('\n');
    
-    
-    
-    
-    
+  
   }
 };
 </script>
