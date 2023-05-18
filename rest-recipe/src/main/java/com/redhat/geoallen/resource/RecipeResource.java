@@ -188,7 +188,7 @@ public class RecipeResource extends CommonResource {
                          else {
                             newRecipe = new Recipe(recipeDTO);
 
-                            newRecipe.image_name = "default.jpg";
+                            //newRecipe.image_name = "default.jpg";
                             newRecipe.persist();
                          }
 
@@ -199,7 +199,7 @@ public class RecipeResource extends CommonResource {
              else {
                     log.info(toString());
                     newRecipe = new Recipe(recipeDTO);
-                    newRecipe.image_name = "default.jpg";
+                    //newRecipe.image_name = "default.jpg";
                     newRecipe.persist();
 
                      return Response.ok(newRecipe).status(Status.CREATED).build();
@@ -267,12 +267,7 @@ public class RecipeResource extends CommonResource {
           else {
             log.info(toString());
             recipeDTOToEntityMapper.merge(existingRecipe,recipeDTO);
-
-            if (existingRecipe.image_name == null || existingRecipe.image_name.length()== 0) {
-
-            existingRecipe.image_name = "default.jpg";
-            }
-            
+    
              
                 }
         

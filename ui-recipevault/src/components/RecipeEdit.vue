@@ -22,7 +22,7 @@
     <div class="vstack gap-3">
 
     <img v-if=url :src="url" />
-    <img v-else v-bind:src="store.image_url + store.recipe.image_name" class="card-img-top" />
+    <img v-else v-bind:src="imageURL(store)" class="card-img-top" />
 
     <div class="mb-3">
   <label for="formFile" class="form-label">Recipe Image</label>
@@ -150,13 +150,17 @@ selectFile() {
       store.currentFile = this.currentFile
     },
 
-formatList() {
+imageURL() {
+      if (store.recipe.image_name != "" && store.recipe.image_name !== null) 
+        {
+        return  this.store.image_url + this.store.recipe.image_name
+        }
+          else  {
+          return "./no_image.jpg"
+          }
+             }
+       },
 
-
-}
-
-
-  },
   mounted() {
     this.message = '';
     store.recipe.directions = store.recipe.directions.join('\n');

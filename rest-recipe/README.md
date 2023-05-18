@@ -80,7 +80,7 @@ Package for building image
 ## Running in native
 You can compile the application into a native executable using:
 
-`./mvnw clean package -Pnative`
+`./mvn -DskipTests clean package -Pnative`
 
 and run with:
 

@@ -16,7 +16,7 @@
 
     <div class="vstack gap-4">
 
-    <img v-bind:src="store.image_url + store.recipe.image_name" class="card-img-top" /> 
+    <img v-bind:src="imageURL(store)" class="card-img-top" /> 
 
        <div>
                 {{store.recipe.description}}
@@ -96,7 +96,19 @@ export default {
       message: '',
       store
     };
-  }
-}
+  },
 
+methods: {
+
+  imageURL() {
+      if (this.store.recipe.image_name != "" && this.store.recipe.image_name !== null) 
+        {
+        return  store.image_url + store.recipe.image_name
+        }
+          else  {
+          return "./images/no_image.jpg"
+          }
+             }
+       }
+}
 </script>

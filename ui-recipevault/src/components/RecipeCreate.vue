@@ -95,7 +95,7 @@
                 class="form-control"
                 id="info"
                 required
-                v-model="recipe.ingredient_list"
+                v-model="recipe.ingredients"
                 name="ingredients"
                 rows="7"
               />
@@ -109,7 +109,7 @@
                 class="form-control"
                 id="directions"
                 required
-                v-model="recipe.direction_list"
+                v-model="recipe.directions"
                 name="directions"
                 rows="7"
               />
@@ -122,7 +122,7 @@
         </div>
   </div>
         <div class="modal-footer">
-          
+           <button class="btn btn-success" @click="testUI">Test Recipe</button>
           <button class="btn btn-success" @click="saveRecipe">Add</button>
         </div>
       </div>
@@ -218,6 +218,25 @@ export default {
       this.submitted = false;
       this.recipe = {};
     },
+
+testUI() {
+      this.submitted = false;
+      this.recipe = {
+        title: "Blueberry Kuechen",
+        description: "Test Description",
+        cuisine: "American",
+        course: "Breakfast",
+        tags: "",
+        ingredients: "first line\nsecond line",
+        directions: "first line\nsecond line",
+        source: "Friend",
+        prep_time: "30",
+        cook_time: "45",
+        servings: "12",
+        serving_unit: "pieces"
+    }
+}
+
   },
 
   mounted() {

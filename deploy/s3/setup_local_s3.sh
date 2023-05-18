@@ -1,7 +1,13 @@
 # Start localstack in podman
 
+#/TODO manage docker/podman command
 echo 'Start localstack S3 via Podman'
-podman run --rm --name local-s3 -p 4566:4566 -p 4572:4572 -e SERVICES=s3 -e START_WEB=0 -d localstack/localstack
+#podman pull --arch arm64 localstack/localstack
+#podman run --rm --name local-s3 -p 4566:4566 -p 4572:4572 -e SERVICES=s3 -e START_WEB=0 -d localstack/localstack
+
+docker pull --arch arm64 localstack/localstack
+docker run --rm --name local-s3 -p 4566:4566 -p 4572:4572 -e SERVICES=s3 -e START_WEB=0 -d localstack/localstack
+
 
 sleep 5
 

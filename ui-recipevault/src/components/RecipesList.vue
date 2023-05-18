@@ -10,7 +10,8 @@
   <div class="col">
     <div class="card">
       
-      <img v-if="displayImage(recipe.image_name)" v-bind:src="image_url + recipe.image_name" class="card-img-top" width="240" height="160"/> 
+      <img v-bind:src="imageURL(recipe)" class="card-img-top" width="240" height="160"/> 
+
         <div class="card-body">
             <h5 class="card-title">{{recipe.title}}</h5> 
             
@@ -70,23 +71,13 @@ export default {
   },
 
 
-/** computed: {
-    // a computed getter
-    displayImage(image_name) {
-      console.log(image_name)
-      // `this` points to the component instance
-      return image_name != "default.jpg" ? 'Yes' : 'No'
-    }
-  },
-  */
-
-
   methods: {
     retrieveRecipes() {
       RecipeDataService.getAll()
         .then(response => {
           this.store.recipes = response.data;
           this.recipes = this.store.recipes
+          this.component = "RecipeView"
           console.log(response.data);
         })
         .catch(e => {
@@ -115,6 +106,7 @@ export default {
           this.modal.hide();
           this.retrieveRecipes();
           
+          
         })
         .catch(e => {
           console.log(e);
@@ -133,12 +125,16 @@ export default {
       this.store.recipe = this.currentRecipe;
       this.currentFile = undefined
       this.store.currentFile = undefined;
+      this.component = "RecipeView"
       this.modal.show();
+    
     },
 
     setEditRecipe() {
       console.log("setEditRecipe")
       this.component = "RecipeEdit"
+      
+      
 
     },
 
@@ -155,6 +151,15 @@ export default {
       else
       return false
       
+    },
+
+     imageURL(recipe) {
+      if (recipe.image_name != "" && recipe.image_name !== null) {
+      return  this.image_url + recipe.image_name
+      }
+      else  {
+      return "./images/no_image.jpg"
+      }
     },
 
   
@@ -184,7 +189,7 @@ export default {
     this.retrieveRecipes();
     this.image_url = window.VUE_APP_IMAGE_SERVER_URL
     this.modal = new Modal(document.getElementById('recipeModal'))
-    //this.modal.addEventListener("hidden.bs.modal", this.setViewMode(event))
+    
   }
 };
 

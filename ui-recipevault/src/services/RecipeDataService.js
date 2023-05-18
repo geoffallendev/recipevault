@@ -14,9 +14,10 @@ class RecipeDataService {
  /** Create Recipe  */
   create(file, recipe) {
 
-    recipe.ingredients = recipe.ingredient_list.split("\n") 
+    /** recipe.ingredients.split is not a function */
+    recipe.ingredients = recipe.ingredients.split("\n") 
 
-    recipe.directions = recipe.direction_list.split("\n") 
+    recipe.directions = recipe.directions.split("\n") 
 
     const new_recipe = JSON.stringify(recipe)
 
@@ -24,10 +25,12 @@ class RecipeDataService {
 
     let formData = new FormData();
   
-  
+    if (file !== undefined) {
+      console.log("File:" + file.name)
       formData.append('filename',file.name);
       formData.append('mimetype',file.type)
       formData.append('file',file)
+   }
       formData.append('recipe',new_recipe)
   
       return http.post(`/recipes`, formData, {
