@@ -14,6 +14,8 @@ class RecipeDataService {
  /** Create Recipe  */
   create(file, recipe) {
 
+/** TODO: validate input - remove potential null pointers
+
     /** recipe.ingredients.split is not a function */
     recipe.ingredients = recipe.ingredients.split("\n") 
 

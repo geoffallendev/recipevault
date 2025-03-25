@@ -156,7 +156,7 @@ imageURL() {
         return  this.store.image_url + this.store.recipe.image_name
         }
           else  {
-          return "./no_image.jpg"
+          return "./images/no_image.jpg"
           }
              }
        },
